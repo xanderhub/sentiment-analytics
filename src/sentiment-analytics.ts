@@ -21,6 +21,19 @@ export class SentimentAnalytics {
             return {};
         }
 
-        return {positive: 0, negative: 0, neutral: 0};
+        let frequencyMap: Record<string, number> = {};
+        let interactionSize: number = 0;
+
+        interaction.segments.forEach(segment =>
+            segment.tokens.forEach(token => {
+                frequencyMap[token] = (frequencyMap[token] || 0) + 1;
+                interactionSize++;
+            }));
+
+        return {
+            positive: (frequencyMap["Positive"] / interactionSize) || 0,
+            negative: (frequencyMap["Negative"] / interactionSize) || 0,
+            neutral: (frequencyMap["Neutral"] / interactionSize) || 0
+        };
     }
 }
