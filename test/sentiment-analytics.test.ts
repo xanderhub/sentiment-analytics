@@ -2,7 +2,7 @@ import {SentimentAnalytics} from "../src/sentiment-analytics";
 import {Interaction} from "../src/types/interaction";
 import {InteractionRepository} from "../src/interfaces/interaction-repository";
 import {Sentiment} from "../src/types/sentiment";
-import {InteractionRepositoryFake} from "./interaction-repository-fake";
+import {InteractionRepositoryFake} from "./fakes/interaction-repository-fake";
 
 describe("sentiment analytics tests", () => {
 
@@ -20,10 +20,9 @@ describe("sentiment analytics tests", () => {
 
     it("should return empty result when interaction has no segments", async function () {
         const interaction: Interaction = {};
-
         const interactionId: string = await interactionRepository.create(interaction);
 
-        const sentimentOfInteraction: Partial<Sentiment> = await sentimentAnalytics.analyze(interactionId);
+        const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
 
         expect(sentimentOfInteraction).toEqual({});
     });

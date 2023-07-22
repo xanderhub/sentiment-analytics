@@ -1,5 +1,5 @@
 export type Sentiment = {
-    positive: number,
-    negative: number,
-    neutral: number
+    positive?: number,
+    negative?: number,
+    neutral?: number
 }

@@ -10,8 +10,8 @@ export class SentimentAnalytics {
         this.interactionRepository = interactionRepository;
     }
 
-    public async analyze(interactionId: string): Promise<Partial<Sentiment>> {
-        const interaction: Interaction | undefined = await this.interactionRepository.get(interactionId);
+    public async analyze(interactionId: string): Promise<Sentiment> {
+        const interaction: Interaction = await this.interactionRepository.get(interactionId);
 
         if(!interaction) {
             throw new Error("Interaction doesn't exist");
