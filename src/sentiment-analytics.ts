@@ -13,10 +13,14 @@ export class SentimentAnalytics {
     public async analyze(interactionId: string): Promise<Sentiment> {
         const interaction: Interaction = await this.interactionRepository.get(interactionId);
 
-        if(!interaction) {
+        if (!interaction) {
             throw new Error("Interaction doesn't exist");
         }
 
-        return {};
+        if (!interaction.segments) {
+            return {};
+        }
+
+        return {positive: 0, negative: 0, neutral: 0};
     }
 }

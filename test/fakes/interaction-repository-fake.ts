@@ -1,16 +1,18 @@
 import {InteractionRepository} from "../../src/interfaces/interaction-repository";
 import {Interaction} from "../../src/types/interaction";
+import {v4 as uuidv4} from 'uuid';
 
 export class InteractionRepositoryFake implements InteractionRepository {
-    create(interaction: Interaction): Promise<string> {
-        return Promise.resolve("");
+
+    private storage: Record<string, Interaction> = {};
+
+    public async create(interaction: Interaction): Promise<string> {
+        const interactionId: string = uuidv4();
+        this.storage[interactionId] = interaction;
+        return interactionId;
     }
 
-    get(interactionId: string): Promise<Interaction> {
-        if(interactionId === "NON_EXISTING_INTERACTION") {
-            return Promise.resolve(undefined);
-        }
-
-        return Promise.resolve({});
+    public async get(interactionId: string): Promise<Interaction> {
+        return this.storage[interactionId];
     }
 }

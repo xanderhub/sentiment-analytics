@@ -26,4 +26,13 @@ describe("sentiment analytics tests", () => {
 
         expect(sentimentOfInteraction).toEqual({});
     });
+
+    it("should return sentiment with zero in all confidence scores for single empty text segment", async function () {
+        const interaction: Interaction = {segments: [{tokens: []}]};
+        const interactionId: string = await interactionRepository.create(interaction);
+
+        const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
+
+        expect(sentimentOfInteraction).toEqual({positive: 0, negative: 0, neutral: 0} as Sentiment);
+    });
 })
