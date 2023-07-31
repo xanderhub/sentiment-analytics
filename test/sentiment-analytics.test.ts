@@ -1,17 +1,17 @@
 import {SentimentAnalytics} from "../src/sentiment-analytics";
 import {Interaction} from "../src/types/interaction";
-import {InteractionRepository} from "../src/interfaces/interaction-repository";
+import {InteractionGateway} from "../src/interfaces/interaction-gateway";
 import {Sentiment} from "../src/types/sentiment";
-import {InteractionRepositoryFake} from "./fakes/interaction-repository-fake";
+import {InteractionGatewayFake} from "./fakes/interaction-gateway-fake";
 
 describe("sentiment analytics tests", () => {
 
     let sentimentAnalytics: SentimentAnalytics;
-    let interactionRepository: InteractionRepository;
+    let interactionGateway: InteractionGateway;
 
     beforeEach(() => {
-        interactionRepository = new InteractionRepositoryFake()
-        sentimentAnalytics = new SentimentAnalytics(interactionRepository);
+        interactionGateway = new InteractionGatewayFake()
+        sentimentAnalytics = new SentimentAnalytics(interactionGateway);
     });
 
     it("should throw error when interaction doesn't exist", async function () {
@@ -20,7 +20,7 @@ describe("sentiment analytics tests", () => {
 
     it("should return empty result when interaction has no segments", async function () {
         const interaction: Interaction = {};
-        const interactionId: string = await interactionRepository.create(interaction);
+        const interactionId: string = await interactionGateway.create(interaction);
 
         const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
 
@@ -29,7 +29,7 @@ describe("sentiment analytics tests", () => {
 
     it("should return sentiment with zero in all confidence scores for single empty text segment", async function () {
         const interaction: Interaction = {segments: [{tokens: []}]};
-        const interactionId: string = await interactionRepository.create(interaction);
+        const interactionId: string = await interactionGateway.create(interaction);
 
         const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
 

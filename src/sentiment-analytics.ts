@@ -1,17 +1,17 @@
 import {Sentiment} from "./types/sentiment";
 import {Interaction} from "./types/interaction";
-import {InteractionRepository} from "./interfaces/interaction-repository";
+import {InteractionGateway} from "./interfaces/interaction-gateway";
 
 export class SentimentAnalytics {
 
-    private interactionRepository: InteractionRepository
+    private interactionGateway: InteractionGateway
 
-    constructor(interactionRepository: InteractionRepository) {
-        this.interactionRepository = interactionRepository;
+    constructor(interactionGateway: InteractionGateway) {
+        this.interactionGateway = interactionGateway;
     }
 
     public async analyze(interactionId: string): Promise<Sentiment> {
-        const interaction: Interaction = await this.interactionRepository.get(interactionId);
+        const interaction: Interaction = await this.interactionGateway.get(interactionId);
 
         if (!interaction) {
             throw new Error("Interaction doesn't exist");
