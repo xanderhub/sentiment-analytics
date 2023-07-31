@@ -21,6 +21,16 @@ export class SentimentAnalytics {
             return {};
         }
 
-        return {positive: 0, negative: 0, neutral: 0};
+        const tokenFrequencyMap: Record<string, number> = {};
+
+        interaction.segments[0].tokens.forEach(token => tokenFrequencyMap[token] = (tokenFrequencyMap[token] || 0) + 1);
+
+        const segmentSize: number = interaction.segments[0].tokens.length;
+
+        const positive: number = tokenFrequencyMap["Positive"] / segmentSize || 0;
+        const neutral: number = tokenFrequencyMap["Neutral"] / segmentSize || 0;
+        const negative: number = tokenFrequencyMap["Negative"] / segmentSize || 0;
+
+        return {positive: positive, negative: negative, neutral: neutral};
     }
 }
