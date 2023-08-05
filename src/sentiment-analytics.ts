@@ -1,6 +1,7 @@
 import {Sentiment} from "./types/sentiment";
 import {Interaction} from "./types/interaction";
 import {InteractionGateway} from "./interfaces/interaction-gateway";
+import {Segment} from "./types/segment";
 
 export class SentimentAnalytics {
 
@@ -21,16 +22,20 @@ export class SentimentAnalytics {
             return {};
         }
 
-        const tokenFrequencyMap: Record<string, number> = {};
+        const segment = interaction.segments[0];
+        const tokenFrequencyMap: Record<string, number> = this.calculateTokenFrequency(segment);
 
-        interaction.segments[0].tokens.forEach(token => tokenFrequencyMap[token] = (tokenFrequencyMap[token] || 0) + 1);
+        return {
+            positive: tokenFrequencyMap["Positive"] / segment.size || 0,
+            neutral: tokenFrequencyMap["Neutral"] / segment.size || 0,
+            negative: tokenFrequencyMap["Negative"] / segment.size || 0
+        };
+    }
 
-        const segmentSize: number = interaction.segments[0].tokens.length;
-
-        const positive: number = tokenFrequencyMap["Positive"] / segmentSize || 0;
-        const neutral: number = tokenFrequencyMap["Neutral"] / segmentSize || 0;
-        const negative: number = tokenFrequencyMap["Negative"] / segmentSize || 0;
-
-        return {positive: positive, negative: negative, neutral: neutral};
+    private calculateTokenFrequency(segment: Segment) {
+        return segment.tokens.reduce((freqMap: Record<string, number>, token: string) => {
+            freqMap[token] = (freqMap[token] || 0) + 1;
+            return freqMap;
+        }, {})
     }
 }

@@ -3,6 +3,7 @@ import {Interaction} from "../src/types/interaction";
 import {InteractionGateway} from "../src/interfaces/interaction-gateway";
 import {Sentiment} from "../src/types/sentiment";
 import {InteractionGatewayFake} from "./fakes/interaction-gateway-fake";
+import {Segment} from "../src/types/segment";
 
 describe("sentiment analytics tests", () => {
 
@@ -28,7 +29,7 @@ describe("sentiment analytics tests", () => {
     });
 
     it("should return sentiment with zero in all confidence scores for single empty text segment", async function () {
-        const interaction: Interaction = {segments: [{tokens: []}]};
+        const interaction: Interaction = {segments: [new Segment([])]};
         const interactionId: string = await interactionGateway.create(interaction);
 
         const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
@@ -37,7 +38,7 @@ describe("sentiment analytics tests", () => {
     });
 
     it("should return sentiment with expected confidence scores for single text segment", async function () {
-        const interaction: Interaction = {segments: [{tokens: ["Positive", "Positive", "Neutral", "Negative"]}]};
+        const interaction: Interaction = {segments: [new Segment(["Positive", "Positive", "Neutral", "Negative"])]};
         const interactionId: string = await interactionGateway.create(interaction);
 
         const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
