@@ -20,7 +20,7 @@ describe("sentiment analytics tests", () => {
     });
 
     it("should return empty result when interaction has no segments", async function () {
-        const interaction: Interaction = {};
+        const interaction: Interaction = new Interaction();
         const interactionId: string = await interactionGateway.create(interaction);
 
         const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
@@ -29,7 +29,7 @@ describe("sentiment analytics tests", () => {
     });
 
     it("should return sentiment with zero in all confidence scores for single empty text segment", async function () {
-        const interaction: Interaction = {segments: [new Segment([])]};
+        const interaction: Interaction = new Interaction([new Segment()]);
         const interactionId: string = await interactionGateway.create(interaction);
 
         const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
@@ -38,11 +38,24 @@ describe("sentiment analytics tests", () => {
     });
 
     it("should return sentiment with expected confidence scores for single text segment", async function () {
-        const interaction: Interaction = {segments: [new Segment(["Positive", "Positive", "Neutral", "Negative"])]};
+        const interaction: Interaction = new Interaction([new Segment(["Positive", "Positive", "Neutral", "Negative"])]);
         const interactionId: string = await interactionGateway.create(interaction);
 
         const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
 
         expect(sentimentOfInteraction).toEqual({positive: 0.5, negative: 0.25, neutral: 0.25} as Sentiment);
+    });
+
+    it("should return sentiment with expected confidence scores for multiple text segments", async function () {
+        const interaction: Interaction = new Interaction([
+            new Segment(["Positive", "Positive", "Neutral", "Negative"]),
+            new Segment(["Positive", "Positive", "Positive", "Positive", "Negative", "Negative"])
+        ]);
+
+        const interactionId: string = await interactionGateway.create(interaction);
+
+        const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
+
+        expect(sentimentOfInteraction).toEqual({positive: 0.6, negative: 0.3, neutral: 0.1} as Sentiment);
     });
 })

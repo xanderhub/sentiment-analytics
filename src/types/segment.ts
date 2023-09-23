@@ -1,12 +1,12 @@
 export class Segment {
-    private readonly _tokens: string[];
+    private readonly _tokens: Array<string>;
     private readonly _size: number;
 
-    constructor(tokens: string[]) {
+    constructor(tokens: Array<string> = []) {
         this._tokens = tokens;
         this._size = tokens.length;
     }
-    get tokens(): string[] {
+    get tokens(): Array<string> {
         return this._tokens;
     }
 
