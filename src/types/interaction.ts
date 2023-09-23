@@ -2,9 +2,9 @@ import {Segment} from "./segment";
 
 export class Interaction {
     private readonly _size: number;
-    private readonly _segments: Array<Segment> | undefined;
+    private readonly _segments: Array<Segment<unknown>> | undefined;
 
-    constructor(segments?: Array<Segment>) {
+    constructor(segments?: Array<Segment<unknown>>) {
         this._segments = segments;
         this._size = segments ? segments.reduce((size, segment) => size + segment.size, 0) : 0
     }
@@ -13,7 +13,7 @@ export class Interaction {
         return this._size;
     }
 
-    get segments(): Array<Segment> | undefined {
+    get segments(): Array<Segment<unknown>> | undefined {
         return this._segments;
     }
 }
