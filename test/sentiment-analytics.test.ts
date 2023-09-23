@@ -45,4 +45,19 @@ describe("sentiment analytics tests", () => {
 
         expect(sentimentOfInteraction).toEqual({positive: 0.5, negative: 0.25, neutral: 0.25} as Sentiment);
     });
+
+    it("should return sentiment with expected confidence scores for multiple text segments", async function () {
+        const interaction: Interaction = {
+            segments: [
+                new Segment(["Positive", "Positive", "Neutral", "Negative"]),
+                new Segment(["Positive", "Positive", "Positive", "Positive", "Negative", "Negative"])
+            ]
+        };
+        const interactionId: string = await interactionGateway.create(interaction);
+
+        const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
+
+        expect(sentimentOfInteraction).toEqual({positive: 0.6, negative: 0.3, neutral: 0.1} as Sentiment);
+    });
+
 })

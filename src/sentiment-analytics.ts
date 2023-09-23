@@ -32,7 +32,7 @@ export class SentimentAnalytics {
         };
     }
 
-    private calculateTokenFrequency(segment: Segment) {
+    private calculateTokenFrequency(segment: Segment): Record<string, number> {
         return segment.tokens.reduce((freqMap: Record<string, number>, token: string) => {
             freqMap[token] = (freqMap[token] || 0) + 1;
             return freqMap;
