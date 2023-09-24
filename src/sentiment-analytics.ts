@@ -22,20 +22,22 @@ export class SentimentAnalytics {
             return {};
         }
 
-        const segment = interaction.segments[0];
-        const tokenFrequencyMap: Record<string, number> = this.calculateTokenFrequency(segment);
-
+        const tokenFrequencyMap: Record<string, number> = this.calculateTokenFrequency(interaction.segments);
+        const interactionSize: number = interaction.segments
+            .reduce((totalSize, segment) => totalSize + segment.size, 0);
+        
         return {
-            positive: tokenFrequencyMap["Positive"] / segment.size || 0,
-            neutral: tokenFrequencyMap["Neutral"] / segment.size || 0,
-            negative: tokenFrequencyMap["Negative"] / segment.size || 0
+            positive: tokenFrequencyMap["Positive"] / interactionSize || 0,
+            neutral: tokenFrequencyMap["Neutral"] / interactionSize || 0,
+            negative: tokenFrequencyMap["Negative"] / interactionSize || 0
         };
     }
 
-    private calculateTokenFrequency(segment: Segment): Record<string, number> {
-        return segment.tokens.reduce((freqMap: Record<string, number>, token: string) => {
-            freqMap[token] = (freqMap[token] || 0) + 1;
-            return freqMap;
-        }, {})
+    private calculateTokenFrequency(segments: Segment[]): Record<string, number> {
+        return segments.flatMap(segment => segment.tokens)
+            .reduce((freqMap: Record<string, number>, token: string) => {
+                freqMap[token] = (freqMap[token] || 0) + 1;
+                return freqMap;
+            }, {})
     }
 }
