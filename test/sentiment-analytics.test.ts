@@ -3,8 +3,8 @@ import {Interaction} from "../src/types/interaction";
 import {InteractionGateway} from "../src/interfaces/interaction-gateway";
 import {Sentiment} from "../src/types/sentiment";
 import {InteractionGatewayFake} from "./fakes/interaction-gateway-fake";
-import {Segment} from "../src/types/segment";
 import {VoiceSegment} from "../src/types/voice-segment";
+import {TextSegment} from "../src/types/text-segment";
 
 describe("sentiment analytics tests", () => {
 
@@ -30,7 +30,7 @@ describe("sentiment analytics tests", () => {
     });
 
     it("should return sentiment with zero in all confidence scores for single empty text segment", async function () {
-        const interaction: Interaction = new Interaction([new Segment()]);
+        const interaction: Interaction = new Interaction([new TextSegment()]);
         const interactionId: string = await interactionGateway.create(interaction);
 
         const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
@@ -40,7 +40,7 @@ describe("sentiment analytics tests", () => {
 
     it("should return sentiment with expected confidence scores for single text segment", async function () {
         const interaction: Interaction = new Interaction([
-                new Segment(["Positive", "Positive", "Neutral", "Negative"])
+                new TextSegment(["Positive", "Positive", "Neutral", "Negative"])
             ]);
 
         const interactionId: string = await interactionGateway.create(interaction);
@@ -52,8 +52,8 @@ describe("sentiment analytics tests", () => {
 
     it("should return sentiment with expected confidence scores for multiple text segments", async function () {
         const interaction: Interaction = new Interaction([
-                new Segment(["Positive", "Positive", "Neutral", "Negative"]),
-                new Segment(["Positive", "Positive", "Positive", "Positive", "Negative", "Negative"])
+                new TextSegment(["Positive", "Positive", "Neutral", "Negative"]),
+                new TextSegment(["Positive", "Positive", "Positive", "Positive", "Negative", "Negative"])
             ]);
 
         const interactionId: string = await interactionGateway.create(interaction);
