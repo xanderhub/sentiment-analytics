@@ -1,7 +1,7 @@
 import {Sentiment} from "./types/sentiment";
 import {Interaction} from "./types/interaction";
 import {InteractionGateway} from "./interfaces/interaction-gateway";
-import {Segment} from "./types/segment";
+import {Segment} from "./types/segments/segment";
 
 export class SentimentAnalytics {
 

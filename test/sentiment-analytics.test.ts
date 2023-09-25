@@ -3,8 +3,8 @@ import {Interaction} from "../src/types/interaction";
 import {InteractionGateway} from "../src/interfaces/interaction-gateway";
 import {Sentiment} from "../src/types/sentiment";
 import {InteractionGatewayFake} from "./fakes/interaction-gateway-fake";
-import {VoiceSegment} from "../src/types/voice-segment";
-import {TextSegment} from "../src/types/text-segment";
+import {VoiceSegment} from "../src/types/segments/voice-segment";
+import {TextSegment} from "../src/types/segments/text-segment";
 
 describe("sentiment analytics tests", () => {
 

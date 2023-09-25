@@ -2,7 +2,7 @@ export abstract class Segment<T> {
     private readonly _tokens: T[];
     private readonly _size: number;
 
-    protected constructor(tokens: T[] = []) {
+    constructor(tokens: T[] = []) {
         this._tokens = tokens;
         this._size = tokens.length;
     }

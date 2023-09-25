@@ -1,4 +1,4 @@
-import {Segment} from "./segment";
+import {Segment} from "./segments/segment";
 
 export class Interaction {
     private readonly _size: number;
