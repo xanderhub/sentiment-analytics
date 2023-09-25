@@ -4,6 +4,7 @@ import {InteractionGateway} from "../src/interfaces/interaction-gateway";
 import {Sentiment} from "../src/types/sentiment";
 import {InteractionGatewayFake} from "./fakes/interaction-gateway-fake";
 import {Segment} from "../src/types/segment";
+import {VoiceSegment} from "../src/types/voice-segment";
 
 describe("sentiment analytics tests", () => {
 
@@ -60,6 +61,18 @@ describe("sentiment analytics tests", () => {
         const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
 
         expect(sentimentOfInteraction).toEqual({positive: 0.6, negative: 0.3, neutral: 0.1} as Sentiment);
+    });
+
+    it("should return sentiment with expected confidence scores for single voice segment", async function () {
+        const interaction: Interaction = new Interaction([
+            new VoiceSegment([78, 100, 65, 22])
+        ]);
+
+        const interactionId: string = await interactionGateway.create(interaction);
+
+        const sentimentOfInteraction: Sentiment = await sentimentAnalytics.analyze(interactionId);
+
+        expect(sentimentOfInteraction).toEqual({positive: 0.5, negative: 0.25, neutral: 0.25} as Sentiment);
     });
 
 })
